@@ -3,4 +3,4 @@ Repository for doodles around Parliamentary Data, matter of possible interest to
 
 Work prepared for this repo originally funded by the [Parliamentary Digital Service (PDS)](https://pds.blog.parliament.uk/).
 
-Website from this repo `docs` folder: [https://psychemedia.github.io/parlihacks/](https://psychemedia.github.io/parlihacks/)
+Website from this repo `docs` folder showing example outputs from notebook and Rmd files among other things: [https://psychemedia.github.io/parlihacks/](https://psychemedia.github.io/parlihacks/)
