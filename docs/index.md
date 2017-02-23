@@ -6,4 +6,4 @@ Work prepared for this repo originally funded by the [Parliamentary Digital Serv
 - [HTML output of *GP Practice List by LSOA.ipynb*](https://psychemedia.github.io/parlihacks/GP%2BPractice%2BList%2Bby%2BLSOA.html)
 - [HTML knit of *gplsoa.Rmd*](https://psychemedia.github.io/parlihacks/gplsoa.html)
 - [PDF knit of *gplsoa.Rmd*](https://psychemedia.github.io/parlihacks/gplsoa.pdf)
-- [example of parameterised reports for IW GP practices](https://psychemedia.github.io/parlihacks/iwgplsoadocs)
+- [example of parameterised reports for IW GP practices from *gplsoaMultiReport.Rmd* and *gplsoa_base.Rmd*](https://psychemedia.github.io/parlihacks/iwgplsoadocs)

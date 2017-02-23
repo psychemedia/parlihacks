@@ -33,7 +33,12 @@ thisGPcaption = paste0(thisGPname,' (',gpcode,')')
 Showing the number patients registered to a specified GP practice by the LSOA of their home address.
 
 ```{r}
-kable(head(thisGP[,c('LSOA_CODE','MALE_PATIENTS','FEMALE_PATIENTS','ALL_PATIENTS')], 5),
+library(plyr)
+
+#Sort by descreasing number of all patients
+thisGP=arrange(thisGP, -ALL_PATIENTS) 
+
+kable(thisGP[,c('LSOA_CODE','MALE_PATIENTS','FEMALE_PATIENTS','ALL_PATIENTS')],
       row.names=FALSE, caption=thisGPcaption)
 ```
 
