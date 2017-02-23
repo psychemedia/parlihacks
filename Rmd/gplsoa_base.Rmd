@@ -1,0 +1,89 @@
+---
+output: pdf_document
+params:
+  gpcode: J84020
+---
+```{r include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(warning = FALSE, message=FALSE, echo=FALSE)
+#If we also set echo=FALSE, the code will be hidden in the knitted report
+
+#The htmlout parameter identifies whether the document is being rendered to HTML.
+#If it isn't, don't render the leaflet/HTML map
+htmlout = opts_knit$get("rmarkdown.pandoc.to")=='html' || is.null(opts_knit$get("rmarkdown.pandoc.to"))
+#(The NULL test lets us render in the interactive mode in RStudio)
+
+gpcode=params$gpcode #'J84020'
+gcode="E06000046"
+
+fp='/Users/ajh59/Dropbox/onthewight/github-openHealthDataDoodles/notebooks/data/gp-reg-patients-LSOA-alt-tall.csv'
+#Alternatively, we could load it in directly from the CSV URL
+df=read.csv(fp, sep=",")
+
+library(rgdal)
+gdata=paste0("/Users/ajh59/Dropbox/onthewight/IWgeodata/lsoa_by_lad/", gcode, ".json")
+geoj= readOGR( gdata, "OGRGeoJSON", verbose = FALSE) # The verbose switch prevents printing of read diagnostics
+
+thisGP= subset(df,PRACTICE_CODE==gpcode)
+thisGPname=thisGP[1,'NAME']
+thisGPcaption = paste0(thisGPname,' (',gpcode,')')
+```
+## GP Catchment Areas - `r thisGPcaption`
+
+Showing the number patients registered to a specified GP practice by the LSOA of their home address.
+
+```{r}
+kable(head(thisGP[,c('LSOA_CODE','MALE_PATIENTS','FEMALE_PATIENTS','ALL_PATIENTS')], 5),
+      row.names=FALSE, caption=thisGPcaption)
+```
+
+```{r}
+library(rgeos)
+#requires maptools, mapproj
+library(ggplot2)
+
+#We need to make sure the data is presented in the correct format...
+#The codes we want to map against in the boundary file are in the LSOA11CD column
+geojf = fortify(geoj, region = "LSOA11CD")
+
+#Plot the map as a choropleth map uwing the ggplot geom_map geom.
+#The aesthetic identfies the column in the data file that identifies the boundary area code
+#Use two geom_maps - one to render *all* the boundaries in the area...
+mapPlot = function(ptype) {
+  g = ggplot() + geom_map(
+  data = df,
+  aes(map_id = LSOA_CODE),
+  map = geojf,
+  fill = 'lightgrey'
+  )
+  
+  # the other to render the choropleth areas
+  g = g + geom_map(data = thisGP, aes_string(map_id = "LSOA_CODE", fill = ptype), map = geojf)
+  #If we omit the first geom_map, only the boundaries of areas associated with the data file will be plotted
+  
+  #Set the zoom scale so we can see all the rendered boundaries
+  g = g + expand_limits(x = geojf$long, y = geojf$lat)  + coord_map()
+  
+  #Set title
+  g = g + ggtitle(paste0(thisGPcaption,': ',ptype))
+  
+  #Display the map
+  g
+}
+```
+
+```{r}
+mapPlot("ALL_PATIENTS")
+```
+
+```{r}
+mapPlot("MALE_PATIENTS")
+```
+
+```{r}
+mapPlot("FEMALE_PATIENTS")
+```
+
+*Automatically generated: `r format(Sys.time(), "%a %b %d %X %Y")`*
+
+The data can be found on the NHS Digital website: [Numbers of Patients Registered at a GP Practice](http://www.content.digital.nhs.uk/catalogue/PUB23139) [[CSV data](http://www.content.digital.nhs.uk/catalogue/PUB23139/gp-reg-patients-LSOA-alt-tall.csv)]. *h/t Carl Baker, HoC Library*.

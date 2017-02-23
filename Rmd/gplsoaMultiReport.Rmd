@@ -1,0 +1,51 @@
+---
+title: "GP Practice Catchment Report Generator for Isle of Wight"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+outdir="iwgplsoadocs"
+dir.create(outdir, showWarnings = FALSE)
+
+```
+
+# Paramterised Report Generator
+
+*Generate a GP Practice catchment area report for each GP practice on the Isle of Wight.*
+
+The following function will render a report for a particular GP code within the Isle of Wight LA area. (We could generalise the base report further to also accept an LA code. We could also consider optimising the code to load in the GP catchment area data here and then pass it to the base report.)
+
+```{r}
+renderDoc = function(gpcode) {
+  basefile="gplsoa_base.Rmd"
+  rmarkdown::render(basefile, params = list(gpcode = gpcode),
+                    output_file =  paste0(outdir,'/gp_lso_catchment_report_', gpcode, '.pdf'),
+                    )
+}
+
+```
+
+I have a utility NHS administrative data that contains information about GP Practices within particular Local Authority areas. Use that databse to find GP practices in the Isle of Wight area.
+
+```{r message=FALSE}
+library(DBI)
+library(RSQLite)
+
+# connect to the sqlite file
+con = dbConnect(RSQLite::SQLite(),
+                dbname="/Users/ajh59/Dropbox/onthewight/github-openHealthDataDoodles/notebooks/nhsadmin.sqlite")
+
+EPRACCUR='epraccur'
+ccode='10L'
+
+#Find GP practices covered by the IW CCG.
+q=paste0("SELECT * FROM ",EPRACCUR," WHERE Commissioner='",ccode,"'")
+epraccur_iw = dbGetQuery(con, q)
+
+#For each practice, generate the report. The 1 value specifies the margin: apply renderDoc to each row
+apply(epraccur_iw["Organisation Code"],1, renderDoc)
+```
+
+
