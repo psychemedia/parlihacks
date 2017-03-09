@@ -1,7 +1,7 @@
 # parlihacks
 Repository for doodles around Parliamentary Data, matter of possible interest to PDS, Parliamentary Library, et al.
 
-Original repo: [here](https://github.com/psychemedia/parlihacks).
+Original repo (source code for reports listed below): [here](https://github.com/psychemedia/parlihacks).
 
 Work prepared for this repo originally funded by the [Parliamentary Digital Service (PDS)](https://pds.blog.parliament.uk/).
 
@@ -10,6 +10,7 @@ Work prepared for this repo originally funded by the [Parliamentary Digital Serv
 - [PDF knit of *gplsoa.Rmd*](https://psychemedia.github.io/parlihacks/gplsoa.pdf)
 - [example of parameterised reports for IW GP practices from *gplsoaMultiReport.Rmd* and *gplsoa_base.Rmd*](https://psychemedia.github.io/parlihacks/iwgplsoadocs)
 
-Related blog posts:
+
+## Related blog posts:
 
 - [Reporting in a Repeatable, Parameterised, Transparent Way](https://blog.ouseful.info/2017/02/23/reporting-in-a-repeatable-parameterised-transparent-way/)
