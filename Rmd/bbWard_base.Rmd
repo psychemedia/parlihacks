@@ -40,6 +40,7 @@ Showing the download speeds by ward.
 library(rgeos)
 #requires maptools, mapproj
 library(ggplot2)
+library(plyr)
 
 #We need to make sure the data is presented in the correct format...
 #The codes we want to map against in the boundary file are in the LSOA11CD column
@@ -65,52 +66,83 @@ mapPlot = function(ptype) {
   g = g + expand_limits(x = geojf$long, y = geojf$lat)  + coord_map()
 
   g=g+ggtitle(ptype)
+  
+  g=g+theme(axis.line=element_blank(),axis.text.x=element_blank(),
+          axis.text.y=element_blank(),axis.ticks=element_blank(),
+          axis.title.x=element_blank(),
+          axis.title.y=element_blank(),
+          panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+          panel.grid.minor=element_blank(),plot.background=element_blank()) + labs(fill="")
+  
   #Display the map
   g
 }
 ```
 
-```{r}
-mapPlot("Connections.receiving.superfast.speeds......30.Mb.s.")
-```
-
 
 ```{r}
-mapPlot("Availability.of.Superfast.broadband.." )
+col="Connections.receiving.superfast.speeds......30.Mb.s."
+mapPlot(col)
+
+#Sort decreasing
+thisConstituency=arrange(thisConstituency,-thisConstituency[col])
+kable(thisConstituency[,c('Ward.Name',col)], row.names=FALSE)
 ```
 
 ```{r}
-mapPlot("Ave.Download.Speed.Mb.s")
+outputter=function(col){
+  print(mapPlot(col))
+  kable(thisConstituency[,c('Ward.Name',col)], row.names=FALSE)
+}
 ```
 ```{r}
-mapPlot("Connections.receiving.speeds.under.2.Mb.s")
+col="Availability.of.Superfast.broadband.."
+outputter(col )
+```
+
+```{r}
+col="Ave.Download.Speed.Mb.s"
+outputter(col )
 ```
 ```{r}
-mapPlot("Connections.receiving.speeds.under.10.Mb.s")
+col="Connections.receiving.speeds.under.2.Mb.s"
+outputter(col )
 ```
 ```{r}
-mapPlot( "Connections.unable.to.receive.10.Mb.s")
+col="Connections.receiving.speeds.under.10.Mb.s"
+outputter(col )
 ```
 ```{r}
-mapPlot("Average.speed.for.basic.broadband.lines..Mb.s.")
+col="Connections.unable.to.receive.10.Mb.s"
+outputter(col )
 ```
 ```{r}
-mapPlot("Average.speed.for.superfast.lines..Mb.s.")
+col="Average.speed.for.basic.broadband.lines..Mb.s."
+outputter(col )
 ```
 ```{r}
-mapPlot("Avaiability.of.Ultrafast.Broadband...300.Mb.s...")
+col="Average.speed.for.superfast.lines..Mb.s."
+outputter(col )
 ```
 ```{r}
-mapPlot("Estimated.data.completenessa")
+col="Avaiability.of.Ultrafast.Broadband...300.Mb.s..."
+outputter(col )
 ```
 ```{r}
-mapPlot("Rank..Ave.download.speed..1.best..8.668.worst.")
+col="Estimated.data.completenessa"
+outputter(col )
 ```
 ```{r}
-mapPlot("Rank..Connections.over.30.Mb.s....1.best.")
+col="Rank..Ave.download.speed..1.best..8.668.worst."
+outputter(col )
 ```
 ```{r}
-mapPlot("Rank..Connections.under.10.Mb.s..1.worst.")
+col="Rank..Connections.over.30.Mb.s....1.best."
+outputter(col )
+```
+```{r}
+col="Rank..Connections.under.10.Mb.s..1.worst."
+outputter(col )
 ```
 
 *Automatically generated: `r format(Sys.time(), "%a %b %d %X %Y")`*
