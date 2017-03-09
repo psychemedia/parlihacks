@@ -11,7 +11,7 @@ Work prepared for this repo originally funded by the [Parliamentary Digital Serv
 - [example of parameterised reports for IW GP practices from *gplsoaMultiReport.Rmd* and *gplsoa_base.Rmd*](https://psychemedia.github.io/parlihacks/iwgplsoadocs)
 - Broadband maps - [PDF knit of *bbWard_base.pdf*](https://psychemedia.github.io/parlihacks/bbWard_base.pdf)
 - [Broadband map shiny app](https://github.com/psychemedia/parlihacks/tree/master/shinyapps/broadband) 
-![](parlidata_rdemos_broadband_-_Shiny.png)
+![](images/parlidata_rdemos_broadband_-_Shiny.png)
 
 ## Related blog posts:
 
