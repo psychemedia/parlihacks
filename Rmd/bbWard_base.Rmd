@@ -1,0 +1,118 @@
+---
+output: pdf_document
+---
+```{r include=FALSE}
+library(knitr)
+
+library(readxl)
+
+knitr::opts_chunk$set(warning = FALSE, message=FALSE, echo=FALSE)
+#If we also set echo=FALSE, the code will be hidden in the knitted report
+
+#The htmlout parameter identifies whether the document is being rendered to HTML.
+#If it isn't, don't render the leaflet/HTML map
+htmlout = opts_knit$get("rmarkdown.pandoc.to")=='html' || is.null(opts_knit$get("rmarkdown.pandoc.to"))
+#(The NULL test lets us render in the interactive mode in RStudio)
+
+gcode="E06000046"
+la='Isle of Wight'
+
+fp='/Users/ajh59/Downloads/Broadband---Constituency-and-Ward-tables'
+#Alternatively, we could load it in directly from the CSV URL
+df = read_excel (paste0(fp,'.xlsx'), sheet = 'Ward Data', skip=2)
+df = df<-df[3:(dim(df)[1]-14),] #drop top two rows and last 5
+write.csv(df,paste0(fp,'csv'))
+df = read.csv (paste0(fp,'csv'))
+
+library(rgdal)
+gdata=paste0("/Users/ajh59/Dropbox/onthewight/IWgeodata/wards_by_lad/", gcode, ".json")
+geoj= readOGR( gdata, "OGRGeoJSON", verbose = FALSE) # The verbose switch prevents printing of read diagnostics
+
+thisConstituency= as.data.frame(df[df['Local.Authority'] ==la,])
+
+```
+## Broadband Speed for Isle of Wight
+
+Showing the download speeds by ward.
+
+
+```{r}
+library(rgeos)
+#requires maptools, mapproj
+library(ggplot2)
+
+#We need to make sure the data is presented in the correct format...
+#The codes we want to map against in the boundary file are in the LSOA11CD column
+geojf = fortify(geoj, region = "WD13CD")
+
+#Plot the map as a choropleth map using the ggplot geom_map geom.
+#The aesthetic identfies the column in the data file that identifies the boundary area code
+#Use two geom_maps - one to render *all* the boundaries in the area...
+mapPlot = function(ptype) {
+  thisConstituency[[ptype]]=as.numeric(thisConstituency[[ptype]])
+  g = ggplot() + geom_map(
+  data = thisConstituency,
+  aes(map_id = Ward.Code),
+  map = geojf,
+  fill = 'lightgrey'
+  )
+  
+  # the other to render the choropleth areas
+  g = g + geom_map(data = thisConstituency, aes_string(map_id = "Ward.Code", fill = ptype), map = geojf)
+  #If we omit the first geom_map, only the boundaries of areas associated with the data file will be plotted
+  
+  #Set the zoom scale so we can see all the rendered boundaries
+  g = g + expand_limits(x = geojf$long, y = geojf$lat)  + coord_map()
+
+  g=g+ggtitle(ptype)
+  #Display the map
+  g
+}
+```
+
+```{r}
+mapPlot("Connections.receiving.superfast.speeds......30.Mb.s.")
+```
+
+
+```{r}
+mapPlot("Availability.of.Superfast.broadband.." )
+```
+
+```{r}
+mapPlot("Ave.Download.Speed.Mb.s")
+```
+```{r}
+mapPlot("Connections.receiving.speeds.under.2.Mb.s")
+```
+```{r}
+mapPlot("Connections.receiving.speeds.under.10.Mb.s")
+```
+```{r}
+mapPlot( "Connections.unable.to.receive.10.Mb.s")
+```
+```{r}
+mapPlot("Average.speed.for.basic.broadband.lines..Mb.s.")
+```
+```{r}
+mapPlot("Average.speed.for.superfast.lines..Mb.s.")
+```
+```{r}
+mapPlot("Avaiability.of.Ultrafast.Broadband...300.Mb.s...")
+```
+```{r}
+mapPlot("Estimated.data.completenessa")
+```
+```{r}
+mapPlot("Rank..Ave.download.speed..1.best..8.668.worst.")
+```
+```{r}
+mapPlot("Rank..Connections.over.30.Mb.s....1.best.")
+```
+```{r}
+mapPlot("Rank..Connections.under.10.Mb.s..1.worst.")
+```
+
+*Automatically generated: `r format(Sys.time(), "%a %b %d %X %Y")`*
+
+The data can be found on  [House of Commons Library Briefing - *Superfast Broadband Coverage in the UK*](http://researchbriefings.parliament.uk/ResearchBriefing/Summary/SN06643#fullreport) *h/t Sara Priestley; Carl Baker; Alex Adcock, HoC Library*.
