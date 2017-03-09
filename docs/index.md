@@ -9,7 +9,7 @@ Work prepared for this repo originally funded by the [Parliamentary Digital Serv
 - [HTML knit of *gplsoa.Rmd*](https://psychemedia.github.io/parlihacks/gplsoa.html)
 - [PDF knit of *gplsoa.Rmd*](https://psychemedia.github.io/parlihacks/gplsoa.pdf)
 - [example of parameterised reports for IW GP practices from *gplsoaMultiReport.Rmd* and *gplsoa_base.Rmd*](https://psychemedia.github.io/parlihacks/iwgplsoadocs)
-- Broadband maps - [PDF knit of *bbWard_base.pdf*](https://psychemedia.github.io/parlihacks/gplsoa.pdf)
+- Broadband maps - [PDF knit of *bbWard_base.pdf*](https://psychemedia.github.io/parlihacks/bbWard_base.pdf)
 
 
 ## Related blog posts:
