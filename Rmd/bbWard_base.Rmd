@@ -95,6 +95,7 @@ outputter=function(col){
   kable(thisConstituency[,c('Ward.Name',col)], row.names=FALSE)
 }
 ```
+
 ```{r}
 col="Availability.of.Superfast.broadband.."
 outputter(col )
@@ -104,42 +105,52 @@ outputter(col )
 col="Ave.Download.Speed.Mb.s"
 outputter(col )
 ```
+
 ```{r}
 col="Connections.receiving.speeds.under.2.Mb.s"
 outputter(col )
 ```
+
 ```{r}
 col="Connections.receiving.speeds.under.10.Mb.s"
 outputter(col )
 ```
+
 ```{r}
 col="Connections.unable.to.receive.10.Mb.s"
 outputter(col )
 ```
+
 ```{r}
 col="Average.speed.for.basic.broadband.lines..Mb.s."
 outputter(col )
 ```
+
 ```{r}
 col="Average.speed.for.superfast.lines..Mb.s."
 outputter(col )
 ```
+
 ```{r}
 col="Avaiability.of.Ultrafast.Broadband...300.Mb.s..."
 outputter(col )
 ```
+
 ```{r}
 col="Estimated.data.completenessa"
 outputter(col )
 ```
+
 ```{r}
 col="Rank..Ave.download.speed..1.best..8.668.worst."
 outputter(col )
 ```
+
 ```{r}
 col="Rank..Connections.over.30.Mb.s....1.best."
 outputter(col )
 ```
+
 ```{r}
 col="Rank..Connections.under.10.Mb.s..1.worst."
 outputter(col )
