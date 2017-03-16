@@ -54,7 +54,7 @@ s=gvisSankey(rr[!is.na(rr$value),c('Region','to','value')], from="Region", to="t
 plot(s)
 ```
 
-According to the [Google Sankey diagram documentation](https://developers.google.com/chart/interactive/docs/gallery/sankey), node labels, as well as the color of nodes and edges, can be controlled; see [Sankey diagrams with googleVis](http://www.magesblog.com/2014/03/sankey-diagrams-with-googlevis.html) for an example of how to pass the parameters in.
+According to the [Google Sankey diagram documentation](https://developers.google.com/chart/interactive/docs/gallery/sankey), node labels, as well as the color of nodes and edges, can be controlled; see [Sankey diagrams with googleVis](http://www.magesblog.com/2014/03/sankey-diagrams-with-googlevis.html) or [this StackOverflow answer](http://stackoverflow.com/a/32111596/454773) for an example of how to pass the parameters in.
 
 ### `rCharts`
 
