@@ -8,9 +8,9 @@ knitr::opts_chunk$set(warning = FALSE, message=FALSE, echo=TRUE)
 
 ## Migration Flows Sankey
 
-As well as supporting the generation of parameterised reports, reprodducble workflwos also support the automated generation of (templated) code that implements interactive charts.
+As well as supporting the generation of parameterised reports, reproducible workflows also support the automated generation of (templated) code that implements interactive charts.
 
-For example, inspired by Oli Hawkins ([Visualising migration between the countries of the UK](http://olihawkins.com/2017/03/1); [demo](http://olihawkins.com/visualisation/8)),  we can generate interactive Sankey plots using the `googleVis` or `rCharts` packages, .
+For example, inspired by Oli Hawkins ([Visualising migration between the countries of the UK](http://olihawkins.com/2017/03/1) [[demo](http://olihawkins.com/visualisation/8)]),  we can generate interactive Sankey plots using the `googleVis` or `rCharts` packages, .
 
 
 ```{r}
@@ -28,14 +28,14 @@ regionsquarematrix2015 = cbind(regionsquarematrix2015[1:2], sapply(regionsquarem
 head(regionsquarematrix2015)
 ```
 
-The Sankey diagram generates expect the data to be provided as edge lists (*from*, *to*, *value*).
+The Sankey diagram generators seem to expect the data to be provided as edge lists (*from*, *to*, *value*).
 
 ```{r}
 library(tidyr)
 #Melt the data(wide to long) so we have from/to/value flows
 rr=regionsquarematrix2015 %>% gather(to, value, 3:ncol(.))
 
-#The googleVis sankey diagram hates cycles - so set unique labels for from/to
+#The Sankey diagram generators dislike cycles - so set unique labels for from/to
 #Not sure if we can use separate labels/identifier columns so we can label things the same?
 rr$to=paste0(rr$to,'_')
 ```
@@ -85,3 +85,17 @@ sankeyPlot2$show('iframesrc', cdn = TRUE)
 Some control over colouring can be introduced by extending the template, as demonstrated in [this Stack Overflow answer](http://stackoverflow.com/a/28500397/454773) (following [this original explanation](http://stackoverflow.com/a/25416927/454773) from @timelyportfolio, the author of the rCharts Sankey package.)
 
 A wide range of interactive chart types can be generated in this way. The [*htmlwidgets for R*](http://www.htmlwidgets.org/) project represents the latest iteration in the production of interactive Javascript widgets for use in RMarkdown documents and Shiny applications.
+
+### `sankeyD3`
+
+This seems to be the most recent attempt at an R/Sankey diagram library, again using D3.js.
+
+```{r, results='asis'}
+#devtools::install_github("fbreitwieser/sankeyD3")
+library(sankeyD3)
+
+#BROKEN: I think the edgelist (Links) *requires* that nodes are identified as integers 0..N-1
+sankeyNetwork(Links = rr, Nodes = rr, Source = "source",
+            Target = "target", Value = "value", NodeID = "Name",
+              fontSize = 12, nodeWidth = 30)
+```
