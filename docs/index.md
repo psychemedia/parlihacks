@@ -12,7 +12,8 @@ Work prepared for this repo originally funded by the [Parliamentary Digital Serv
 - Broadband maps - [PDF knit of *bbWard_base.Rmd*](https://psychemedia.github.io/parlihacks/bbWard_base.pdf) [[code](https://github.com/psychemedia/parlihacks/blob/master/Rmd/bbWard_base.Rmd)]
 - Broadband map shiny app [[code](https://github.com/psychemedia/parlihacks/tree/master/shinyapps/broadband)] 
 ![](images/parlidata_rdemos_broadband_-_Shiny.png)
-- Sankey diagram demo - [HTML output](https://psychemedia.github.io/parlihacks/sankeyFlow.html), [code](https://github.com/psychemedia/parlihacks/blob/master/Rmd/sankeyFlow.Rmd)
+- Sankey diagram demo (Rmd) - [HTML output of Rmd](https://psychemedia.github.io/parlihacks/sankeyFlow.html), [Rmd code](https://github.com/psychemedia/parlihacks/blob/master/Rmd/sankeyFlow.Rmd)
+- Sankey diagram demo (ipynb) - [HTML output of ipynb](https://psychemedia.github.io/parlihacks/MigrantFlow.html), [ipynb notebook](https://github.com/psychemedia/parlihacks/blob/master/notebooks/MigrantFlow.ipynb)
 
 ## Related blog posts:
 
