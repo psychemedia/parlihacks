@@ -15,16 +15,18 @@ For example, inspired by Oli Hawkins ([Visualising migration between the countri
 Note that the packages generate standalone HTML/Javascript code to implement the charts, code that can be used elsewhere or embedded in other HTML pages.
 
 ```{r}
-#The RCharts package thros a wobbly if we don't load knitr in explicitly
+#The RCharts package throws a wobbly if we don't load knitr in explicitly
 library(knitr)
 library(readr)
 
 #Data from ONS: https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/migrationwithintheuk/datasets/matricesofinternalmigrationmovesbetweenlocalauthoritiesandregionsincludingthecountriesofwalesscotlandandnorthernireland
-regionsquarematrix2015 = read_csv("./laandregionsquarematrices2015/regionsquarematrix2015.csv", skip = 8)
+regionsquarematrix2015 = read_csv("../data/laandregionsquarematrices2015/regionsquarematrix2015.csv", skip = 8)
 
 #The data has thousand separator commas - so remove them and convert to numeric
 #There is probably a more idiomatic way of doing this using tidyr...
-regionsquarematrix2015 = cbind(regionsquarematrix2015[1:2], sapply(regionsquarematrix2015[3:ncol(regionsquarematrix2015)], function(x)  as.numeric(gsub(",", "", x)) ) )
+regionsquarematrix2015 = cbind(regionsquarematrix2015[1:2],
+                               sapply(regionsquarematrix2015[3:ncol(regionsquarematrix2015)],
+                                      function(x)  as.numeric(gsub(",", "", x)) ) )
 
 head(regionsquarematrix2015)
 ```
@@ -35,18 +37,30 @@ The Sankey diagram generators seem to expect the data to be provided as edge lis
 library(tidyr)
 
 #Melt the data (wide to long) so we have from/to/value flows
-rr=regionsquarematrix2015 %>% gather(from, value, 3:ncol(.))
+rr=regionsquarematrix2015 %>% gather(source, value, 3:ncol(.))
+
+#Merge in names for the source areas
+rr=merge(rr, unique(data.frame(SOURCE=rr$DESTINATION,
+                               source=rr$Region)),
+         by='source')
 
 #The Sankey diagram generators dislike cycles - so set unique labels for from/to
-#Not sure if we can use separate labels/identifier columns so we can label things the same?
-rr$from=paste0(rr$from,'_')
+rr$source=paste0(rr$source,'_')
+rr$SOURCE=paste0(rr$SOURCE,' ')
 
+#Drop rows that have no flow associated with them
+rr=rr[!is.na(rr$value),]
+
+colnames(rr) = c("source","targetName","target","value","sourceName")
+rr = rr[,c("sourceName","targetName","source","target","value")]
 head(rr)
 ```
 
 ### `googleVis`
 
-Generate a Sankey diagram using `googleVis`:
+[`googleVis`](https://github.com/mages/googleVis) is an R package that provides an R wrapper around/interface to *Google Chart tools*.
+
+We can generate a Sankey diagram using `googleVis` from a data frame representing an edge list in the following way:
 
 ```{r, results='asis'}
 #For use in Rmd/knitr, set the block parameter: results='asis'
@@ -54,12 +68,106 @@ library(googleVis)
 options(gvis.plot.tag='chart')
 
 #Generate the Sankey diagram HTML
-s=gvisSankey(rr[!is.na(rr$value),c('Region','from','value')], to="Region", from="from", weight="value")
+s=gvisSankey(rr[,c('source','target','value')])
 #And render it
 plot(s)
 ```
 
+Notwithstanding the availability of `from`, `to` and `weight` parameters for specifying column names, the function appears to want the dataframe passed in in a particular way, specifically `from`, `to`, `weight`.
+
 According to the [Google Sankey diagram documentation](https://developers.google.com/chart/interactive/docs/gallery/sankey), node labels, as well as the color of nodes and edges, can be controlled; see [Sankey diagrams with googleVis](http://www.magesblog.com/2014/03/sankey-diagrams-with-googlevis.html) or [this StackOverflow answer](http://stackoverflow.com/a/32111596/454773) for an example of how to pass the parameters in.
+
+To color the nodes, we need to provide node colors in the order in which the nodes are added to the chart. We can find the node order by interleaving the source and target columns:
+
+```{r}
+nodeOrder=unique(c(rbind(rr$source, rr$target)))
+```
+
+Add some node colors:
+
+```{r , results='asis'}
+colormapl=c(E='#ffcc00',N='green',S='blue',W='red')
+
+#Now we need to get the color for the node order.
+nodeColor=unname(colormapl[substring(nodeOrder, 1, 1)])
+
+#http://stackoverflow.com/a/32111596/454773
+colors_node_array = paste0("[", paste0("'", nodeColor,"'", collapse = ','), "]")
+
+opts = paste0("{ node: { colors: ", colors_node_array ," } }" )
+
+s=gvisSankey(rr[,c('source','target','value')], options=list( sankey=opts))
+plot(s)
+```
+
+Add some edge colors, again in the order of edges supplied.
+
+```{r, results='asis'}
+#Use the originating node colour for the edge
+opts = paste0("{ link: { colorMode: 'source' },node: { colors: ", colors_node_array ," } }" )
+s=gvisSankey(rr[,c('source','target','value')], options=list(sankey=opts))
+plot(s)
+```
+
+The labels are the node values. If we map the identifiers to (distinct) labels, they make the chart more informative.
+
+```{r,results='asis'}
+s=gvisSankey(rr[,c('sourceName','targetName','value')], options=list(sankey=opts))
+plot(s)
+```
+
+Generate a view of the chart that omits flows within the same country.
+
+```{r,results='asis'}
+
+#Limit the rows
+rr2=rr[substring(rr$target, 1, 1)!=substring(rr$source, 1, 1),]
+
+#ABstract out the code that allows us to generate a new color array
+setNodeColors=function(df,source='source',target='target'){
+  #Interleave the nodes from the edgelist in the order they are introduced
+  nodeOrder=unique(c(rbind(df[[source]], df[[target]])))
+  #Generae a color mapping from the country indicator at the start of the country/region code
+  nodeColor=unname(colormapl[substring(nodeOrder, 1, 1)])
+  #Get the data in the form that the Sankey widget wants it...
+  colors_node_array = paste0("[", paste0("'", nodeColor,"'", collapse = ','), "]")
+  colors_node_array
+}
+
+colors_node_array=setNodeColors(rr2)
+
+opts = paste0("{ link: { colorMode: 'source' }, node: { colors: ", colors_node_array ," } }" )
+s=gvisSankey(rr2[,c('sourceName','targetName','value')], options=list(sankey=opts))
+plot(s)
+```
+
+Finally, how about we group the (English) regional flows to a single English flow.
+
+```{r,results='asis'}
+library(dplyr)
+countrymap=c(E='England',N='Northern Ireland',S='Scotland',W='Wales')
+  
+rr2$countrysource=countrymap[substring(rr2$source, 1, 1)]
+rr2$countrytarget=paste0(countrymap[substring(rr2$target, 1, 1)],' ')
+rrg = rr2 %>%
+          group_by(countrysource,countrytarget) %>%
+          summarise(value = sum(value))
+
+#Generate new color array
+colors_node_array=setNodeColors(rrg,'countrysource','countrytarget')
+
+opts = paste0("{ link: { colorMode: 'source' }, node: { colors: ", colors_node_array ," } }" )
+s=gvisSankey(rrg,options=list(sankey=opts))
+plot(s)
+```
+
+We can also change the edge color to a gradient between the source and target color values, but this just looks a horrible mess to me! 
+
+```{r, results='asis'}
+opts = paste0("{ link: { colorMode: 'gradient' }, node: { colors: ", colors_node_array ," } }" )
+s=gvisSankey(rrg,options=list(sankey=opts))
+plot(s)
+```
 
 ### `rCharts`
 
@@ -70,18 +178,17 @@ Generate a Sankey diagram using `rCharts`:
 #There is also a particle flow enhancement demoed at https://bl.ocks.org/micahstubbs/6a366e759f029599678e293521d7e26c
 library(rCharts)
 
-colnames(rr) = c("sourceName","target","source","value")
-
 sankeyPlot2 <- rCharts$new()
 sankeyPlot2$setLib('http://timelyportfolio.github.io/rCharts_d3_sankey/')
 sankeyPlot2$set(
-  data = rr,
+  data = rr[,c('source','target','value')],
   nodeWidth = 15,
   nodePadding = 10,
   layout = 32,
   width = 750,
   height = 500
 )
+
 sankeyPlot2$show('iframesrc', cdn = TRUE)
 #Note that at the time of writing, the rCharts_d3_sankey bakes in the http protocol for loading three
 #resources that breaks if the output HTML page is served as https.
@@ -95,15 +202,22 @@ A wide range of interactive chart types can be generated in this way. The [*html
 
 This seems to be the most recent attempt at an R/Sankey diagram library, again using D3.js.
 
+The library appears to require nodes being identified as consecutive integers, starting at 0.
+
 ```{r, results='asis'}
 #devtools::install_github("fbreitwieser/sankeyD3")
 library(sankeyD3)
 library(plyr)
 
 #Get a mapping from codes to numeric node IDs
-rrd=data.frame(rid=c(unlist(regionsquarematrix2015$Region),unlist(paste0(regionsquarematrix2015$Region,'_'))))
+#Need to interleave the nodes appropriately
+rrd=data.frame(rid= c(rbind(regionsquarematrix2015$Region,
+                            paste0(regionsquarematrix2015$Region,'_'))) )
+
 rrd['num']=0:(nrow(rrd)-1)
-rrd['name']=c(unlist(regionsquarematrix2015$DESTINATION),unlist(paste0(regionsquarematrix2015$DESTINATION,'_')))
+
+rrd['name']=c(rbind(c(regionsquarematrix2015$DESTINATION,
+                      paste0(regionsquarematrix2015$DESTINATION,'_'))))
 
 #Map the edges
 rr$source=as.integer(mapvalues(unlist(rr$source),from=unlist(rrd['rid']),to=unlist(rrd['num'])))
@@ -113,3 +227,4 @@ sankeyNetwork(Links = rr, Nodes = rrd, Source = "source", title="Migration Flows
             Target = "target", Value = "value", NodeID = "name",
               fontSize = 12, nodeWidth = 30,showNodeValues = FALSE)
 ```
+
