@@ -14,8 +14,9 @@ Work prepared for this repo originally funded by the [Parliamentary Digital Serv
 ![](images/parlidata_rdemos_broadband_-_Shiny.png)
 - Sankey diagram demo (Rmd) - [HTML output of Rmd](https://psychemedia.github.io/parlihacks/sankeyFlow.html), [Rmd code](https://github.com/psychemedia/parlihacks/blob/master/Rmd/sankeyFlow.Rmd)
 - Sankey diagram demo (ipynb) - [HTML output of ipynb](https://psychemedia.github.io/parlihacks/MigrantFlow.html), [ipynb notebook](https://github.com/psychemedia/parlihacks/blob/master/notebooks/MigrantFlow.ipynb)
-
+- Sankey demo2 - written questions: [notebook](https://github.com/psychemedia/parlihacks/blob/master/notebooks/WrittenQuestions.ipynb) and [HTML output](https://psychemedia.github.io/parlihacks/WrittenQuestions.html)
 ## Related blog posts:
 
 - [Reporting in a Repeatable, Parameterised, Transparent Way](https://blog.ouseful.info/2017/02/23/reporting-in-a-repeatable-parameterised-transparent-way/)
 - [Reuse and Build On – IW Broadband Reports](https://blog.ouseful.info/2017/03/09/reuse-and-build-on-iw-broadband-reports/)
+- [Experimenting With Sankey Diagrams in R and Python](https://blog.ouseful.info/2017/03/17/experimenting-with-sankey-diagrams-in-r-and-python/)
