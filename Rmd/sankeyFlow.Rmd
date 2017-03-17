@@ -10,8 +10,9 @@ knitr::opts_chunk$set(warning = FALSE, message=FALSE, echo=TRUE)
 
 As well as supporting the generation of parameterised reports, reproducible workflows also support the automated generation of (templated) code that implements interactive charts.
 
-For example, inspired by Oli Hawkins ([Visualising migration between the countries of the UK](http://olihawkins.com/2017/03/1) [[demo](http://olihawkins.com/visualisation/8)]),  we can generate interactive Sankey plots using the `googleVis` or `rCharts` packages, .
+For example, inspired by Oli Hawkins ([Visualising migration between the countries of the UK](http://olihawkins.com/2017/03/1) [[demo](http://olihawkins.com/visualisation/8)]),  we can generate interactive Sankey plots using the `googleVis` or `rCharts` packages.
 
+Note that the packages generate standalone HTML/Javascript code to implement the charts, code that can be used elsewhere or embedded in other HTML pages.
 
 ```{r}
 #The RCharts package thros a wobbly if we don't load knitr in explicitly
@@ -32,12 +33,15 @@ The Sankey diagram generators seem to expect the data to be provided as edge lis
 
 ```{r}
 library(tidyr)
-#Melt the data(wide to long) so we have from/to/value flows
-rr=regionsquarematrix2015 %>% gather(to, value, 3:ncol(.))
+
+#Melt the data (wide to long) so we have from/to/value flows
+rr=regionsquarematrix2015 %>% gather(from, value, 3:ncol(.))
 
 #The Sankey diagram generators dislike cycles - so set unique labels for from/to
 #Not sure if we can use separate labels/identifier columns so we can label things the same?
-rr$to=paste0(rr$to,'_')
+rr$from=paste0(rr$from,'_')
+
+head(rr)
 ```
 
 ### `googleVis`
@@ -48,8 +52,9 @@ Generate a Sankey diagram using `googleVis`:
 #For use in Rmd/knitr, set the block parameter: results='asis'
 library(googleVis)
 options(gvis.plot.tag='chart')
+
 #Generate the Sankey diagram HTML
-s=gvisSankey(rr[!is.na(rr$value),c('Region','to','value')], from="Region", to="to", weight="value")
+s=gvisSankey(rr[!is.na(rr$value),c('Region','from','value')], to="Region", from="from", weight="value")
 #And render it
 plot(s)
 ```
@@ -65,7 +70,7 @@ Generate a Sankey diagram using `rCharts`:
 #There is also a particle flow enhancement demoed at https://bl.ocks.org/micahstubbs/6a366e759f029599678e293521d7e26c
 library(rCharts)
 
-colnames(rr) = c("Name","source","target","value")
+colnames(rr) = c("sourceName","target","source","value")
 
 sankeyPlot2 <- rCharts$new()
 sankeyPlot2$setLib('http://timelyportfolio.github.io/rCharts_d3_sankey/')
@@ -93,9 +98,18 @@ This seems to be the most recent attempt at an R/Sankey diagram library, again u
 ```{r, results='asis'}
 #devtools::install_github("fbreitwieser/sankeyD3")
 library(sankeyD3)
+library(plyr)
 
-#BROKEN: I think the edgelist (Links) *requires* that nodes are identified as integers 0..N-1
-sankeyNetwork(Links = rr, Nodes = rr, Source = "source",
-            Target = "target", Value = "value", NodeID = "Name",
-              fontSize = 12, nodeWidth = 30)
+#Get a mapping from codes to numeric node IDs
+rrd=data.frame(rid=c(unlist(regionsquarematrix2015$Region),unlist(paste0(regionsquarematrix2015$Region,'_'))))
+rrd['num']=0:(nrow(rrd)-1)
+rrd['name']=c(unlist(regionsquarematrix2015$DESTINATION),unlist(paste0(regionsquarematrix2015$DESTINATION,'_')))
+
+#Map the edges
+rr$source=as.integer(mapvalues(unlist(rr$source),from=unlist(rrd['rid']),to=unlist(rrd['num'])))
+rr$target=as.integer(mapvalues(unlist(rr$target),from=unlist(rrd['rid']),to=unlist(rrd['num'])))
+
+sankeyNetwork(Links = rr, Nodes = rrd, Source = "source", title="Migration Flows",
+            Target = "target", Value = "value", NodeID = "name",
+              fontSize = 12, nodeWidth = 30,showNodeValues = FALSE)
 ```
