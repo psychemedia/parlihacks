@@ -20,7 +20,7 @@ Work prepared for this repo originally funded by the [Parliamentary Digital Serv
 
 - [Reporting in a Repeatable, Parameterised, Transparent Way](https://blog.ouseful.info/2017/02/23/reporting-in-a-repeatable-parameterised-transparent-way/)
 - [Reuse and Build On – IW Broadband Reports](https://blog.ouseful.info/2017/03/09/reuse-and-build-on-iw-broadband-reports/)
-= [Transparency in Parliament… And in Data Journalism?](https://blog.ouseful.info/2017/03/15/transparency-in-parliament-and-in-data-journalism/)
+- [Transparency in Parliament… And in Data Journalism?](https://blog.ouseful.info/2017/03/15/transparency-in-parliament-and-in-data-journalism/)
 - [Experimenting With Sankey Diagrams in R and Python](https://blog.ouseful.info/2017/03/17/experimenting-with-sankey-diagrams-in-r-and-python/)
 - [Tinkering With Parliament Data APIs: Commons Written Questions And Parliamentary Written Answers
 ](https://blog.ouseful.info/2017/03/18/tinkering-with-parliament-data-apis-commons-written-questions-and-parliamentary-written-answers/)
