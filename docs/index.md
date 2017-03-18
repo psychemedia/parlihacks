@@ -18,6 +18,7 @@ Work prepared for this repo originally funded by the [Parliamentary Digital Serv
 
 ## Related blog posts:
 
+- [Open Educational Resources from Government and Parliament](https://blog.ouseful.info/2017/02/15/open-educational-resources-from-government-and-partliament/)
 - [Reporting in a Repeatable, Parameterised, Transparent Way](https://blog.ouseful.info/2017/02/23/reporting-in-a-repeatable-parameterised-transparent-way/)
 - [Reuse and Build On – IW Broadband Reports](https://blog.ouseful.info/2017/03/09/reuse-and-build-on-iw-broadband-reports/)
 - [Transparency in Parliament… And in Data Journalism?](https://blog.ouseful.info/2017/03/15/transparency-in-parliament-and-in-data-journalism/)
