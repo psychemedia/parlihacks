@@ -2,9 +2,9 @@
 FROM rocker/tidyverse:3.4.2
 
 RUN apt-get update && \
-    apt-get -y install python3-pip && \
+    apt-get -y install python3-pip gdal-bin proj && \
     pip3 install --no-cache-dir \
-         notebook==5.2 \
+         notebook==5.2 requests requests_cache lxml pandas matplotlib mnis ipysankeywidget xlrd pyahocorasick fuzzywuzzy nltk gensim rdflib networkx folium fiona \
          git+https://github.com/jupyterhub/nbrsessionproxy.git@6eefeac11cbe82432d026f41a3341525a22d6a0b \
          git+https://github.com/jupyterhub/nbserverproxy.git@5508a182b2144d29824652d8977b32302517c8bc && \
     apt-get purge && \
@@ -19,7 +19,7 @@ WORKDIR ${HOME}
 USER ${NB_USER}
 
 # Set up R Kernel for Jupyter
-RUN R --quiet -e "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'))"
+RUN R --quiet -e "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest', 'rgdal'))"
 RUN R --quiet -e "devtools::install_github('IRkernel/IRkernel')"
 RUN R --quiet -e "IRkernel::installspec()"
 
@@ -27,6 +27,7 @@ RUN jupyter serverextension enable --user --py nbserverproxy
 RUN jupyter serverextension enable --user --py nbrsessionproxy
 RUN jupyter nbextension install    --user --py nbrsessionproxy
 RUN jupyter nbextension enable     --user --py nbrsessionproxy
+RUN jupyter nbextension enable --user --py ipysankeywidget
 
 # Make sure the contents of our repo are in ${HOME}
 COPY . ${HOME}
