@@ -4,7 +4,7 @@ FROM rocker/tidyverse:3.4.2
 RUN apt-get update && \
     apt-get -y install python3-pip libgdal-dev gdal-bin libproj-dev proj-data proj-bin && \
     pip3 install --no-cache-dir \
-         notebook==5.2 requests requests_cache lxml pandas matplotlib mnis ipysankeywidget xlrd pyahocorasick fuzzywuzzy nltk gensim rdflib networkx folium fiona \
+         notebook==5.2 requests requests_cache lxml pandas matplotlib mnis ipysankeywidget xlrd pyahocorasick fuzzywuzzy nltk gensim rdflib networkx folium fiona jupyter_kernel_gateway RISE \
          git+https://github.com/jupyterhub/nbrsessionproxy.git@6eefeac11cbe82432d026f41a3341525a22d6a0b \
          git+https://github.com/jupyterhub/nbserverproxy.git@5508a182b2144d29824652d8977b32302517c8bc && \
     apt-get purge && \
@@ -28,6 +28,9 @@ RUN jupyter serverextension enable --user --py nbrsessionproxy
 RUN jupyter nbextension install    --user --py nbrsessionproxy
 RUN jupyter nbextension enable     --user --py nbrsessionproxy
 RUN jupyter nbextension enable --user --py ipysankeywidget
+
+RUN jupyter-nbextension install --py --user rise
+RUN jupyter-nbextension enable  --py --user rise
 
 # Make sure the contents of our repo are in ${HOME}
 COPY . ${HOME}
