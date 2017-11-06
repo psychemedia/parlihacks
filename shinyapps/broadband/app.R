@@ -18,7 +18,7 @@ fp='/home/rstudio/data/Broadband---Constituency-and-Ward-tables'
 df = read_excel (paste0(fp,'.xlsx'), sheet = 'Ward Data', skip=2)
 df = df<-df[3:(dim(df)[1]-14),] #drop top two rows and last 5
 write.csv(df,paste0(fp,'csv'))
-df = read.csv (paste0(fp,'csv'))
+df = read.csv (paste0(fp,'csv'),skip=1)
 
 library(rgdal)
 gdata=paste0("/home/rstudio/data/wards_by_lad/", gcode, ".json")
