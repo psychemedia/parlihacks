@@ -2,7 +2,7 @@
 FROM rocker/tidyverse:3.4.2
 
 RUN apt-get update && \
-    apt-get -y install python3-pip libgdal1-dev libgdal1h gdal-bin libproj-dev proj-data proj-bin && \
+    apt-get -y install python3-pip libgdal1-dev gdal-bin libproj-dev proj-data proj-bin && \
     pip3 install --no-cache-dir \
          notebook==5.2 requests requests_cache lxml pandas matplotlib mnis ipysankeywidget xlrd pyahocorasick fuzzywuzzy nltk gensim rdflib networkx folium fiona \
          git+https://github.com/jupyterhub/nbrsessionproxy.git@6eefeac11cbe82432d026f41a3341525a22d6a0b \
