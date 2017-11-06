@@ -61,7 +61,7 @@ In this case, I'll load in the boundary file for LSOAs in the Isle of Wight loca
 ```{r}
 library(rgdal)
 
-geoj= readOGR("/Users/ajh59/Dropbox/onthewight/IWgeodata/lsoa_by_lad/E06000046.json", "OGRGeoJSON",
+geoj= readOGR("/home/rstudio/data/lsoa_by_lad/E06000046.json", "OGRGeoJSON",
               verbose = FALSE) # The verbose switch prevents printing of read diagnostics
 	
 #Preview the boundary file

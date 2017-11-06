@@ -21,7 +21,7 @@ write.csv(df,paste0(fp,'csv'))
 df = read.csv (paste0(fp,'csv'))
 
 library(rgdal)
-gdata=paste0("/Users/ajh59/Dropbox/onthewight/IWgeodata/wards_by_lad/", gcode, ".json")
+gdata=paste0("/home/rstudio/data/wards_by_lad/", gcode, ".json")
 geoj= readOGR( gdata, "OGRGeoJSON", verbose = FALSE) # The verbose switch prevents printing of read diagnostics
 
 thisConstituency= as.data.frame(df[df['Local.Authority'] ==la,])
