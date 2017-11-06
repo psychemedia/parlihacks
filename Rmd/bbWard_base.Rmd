@@ -17,7 +17,7 @@ htmlout = opts_knit$get("rmarkdown.pandoc.to")=='html' || is.null(opts_knit$get(
 gcode="E06000046"
 la='Isle of Wight'
 
-fp='/Users/ajh59/Downloads/Broadband---Constituency-and-Ward-tables'
+fp='/home/rstudio/data/Broadband---Constituency-and-Ward-tables'
 #Alternatively, we could load it in directly from the CSV URL
 df = read_excel (paste0(fp,'.xlsx'), sheet = 'Ward Data', skip=2)
 df = df<-df[3:(dim(df)[1]-14),] #drop top two rows and last 5
@@ -25,7 +25,7 @@ write.csv(df,paste0(fp,'csv'))
 df = read.csv (paste0(fp,'csv'))
 
 library(rgdal)
-gdata=paste0("/Users/ajh59/Dropbox/onthewight/IWgeodata/wards_by_lad/", gcode, ".json")
+gdata=paste0("/home/rstudio/data/wards_by_lad/", gcode, ".json")
 geoj= readOGR( gdata, "OGRGeoJSON", verbose = FALSE) # The verbose switch prevents printing of read diagnostics
 
 thisConstituency= as.data.frame(df[df['Local.Authority'] ==la,])

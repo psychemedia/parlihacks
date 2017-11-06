@@ -16,12 +16,12 @@ htmlout = opts_knit$get("rmarkdown.pandoc.to")=='html' || is.null(opts_knit$get(
 gpcode=params$gpcode #'J84020'
 gcode="E06000046"
 
-fp='/Users/ajh59/Dropbox/onthewight/github-openHealthDataDoodles/notebooks/data/gp-reg-patients-LSOA-alt-tall.csv'
+fp='/home/rstudio/data/gp-reg-patients-LSOA-alt-tall.csv'
 #Alternatively, we could load it in directly from the CSV URL
 df=read.csv(fp, sep=",")
 
 library(rgdal)
-gdata=paste0("/Users/ajh59/Dropbox/onthewight/IWgeodata/lsoa_by_lad/", gcode, ".json")
+gdata=paste0("/home/rstudio/lsoa_by_lad/", gcode, ".json")
 geoj= readOGR( gdata, "OGRGeoJSON", verbose = FALSE) # The verbose switch prevents printing of read diagnostics
 
 thisGP= subset(df,PRACTICE_CODE==gpcode)

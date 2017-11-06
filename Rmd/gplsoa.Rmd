@@ -35,7 +35,7 @@ The data can be found on the NHS Digital website: [Numbers of Patients Registere
 Import the data into a dataframe, and preview the first few rows.
 
 ```{r}
-fp='/Users/ajh59/Dropbox/onthewight/github-openHealthDataDoodles/notebooks/data/gp-reg-patients-LSOA-alt-tall.csv'
+fp='/home/rstudio/data/gp-reg-patients-LSOA-alt-tall.csv'
 #Alternatively, we could load it in directly from the CSV URL
 df=read.csv(fp, sep=",")
 head(df, 5)

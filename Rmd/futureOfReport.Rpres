@@ -1,0 +1,150 @@
+The Future Of Parliamentary Committee Reports (1)
+========================================================
+author: Tony Hirst 
+date: 26/9/17
+autosize: true
+
+Parliamentary Committee Reports - Production
+========================================================
+
+Current reports are Microsoft Office(?) originated documents published via an InDesign workflow to print (PDF) and web (simple HTML).
+
+Parliamentary Committee Reports - Administrative Parliamentary Information
+========================================================
+
+Reports may include references to some or all of the following:
+- membership
+- written evidence (e.g contributor name and evidence reference code)
+- witnesses (e.g. by session and grouped question number)
+- reports produced (report number, title, report code)
+
+- (recommendations)
+
+Parliamentary Committee Reports - Content
+========================================================
+Reports are documents containing the following structural elements:
+- numbered text paragraphs
+- referenced quotes
+- formal recommendations
+- charts and tables
+  - reused from submitted evidence or third party sources
+  - (generated from authoritative sources / original data publishers)
+- footnotes to referenced material (e.g. oral evidence question number, written evidence reference code)
+
+User Groups
+========================================================
+Reports may be used by:
+- members
+- Government departments / officials / policymakers
+- media
+- "general public" special interest groups
+- academia
+- committee itself
+
+Report Uses
+========================================================
+Reports may be used in the following ways:
+- source of evidence
+- considered opinion of the committee
+- request for Government response (recommendations)
+
+Committee / Report Metrics ("Success Measures")
+========================================================
+What makes a successful committee or report?
+- informed/influenced Government policy?
+- informed/influenced legislative process in the House?
+- informed / influenced / referenced by lobby groups and subject area interest groups?
+- established media mentions?
+- quotation and citation in other reports inside and outside Parliament & Government?
+- (social media impact?)
+
+Report as a Contextualising Linked Summary of Other Parliamentary Data
+========================================================
+
+Reports provide a summary consideration of supplied evidence in a narrative form, with references to specific items of evidence (oral evidence questions and written evidence submissions).
+
+Reports contain a list of recommendations that act as provocations expecting of a Government reponse.
+
+Reports reference contributors to oral evidence sessions and selected contributors of written evidence.
+
+One Way Flow of Information - From Upstream Evidence
+========================================================
+
+Reports reference pieces of evidence but evidence does not reference reports that used the evidence?
+
+For example, should we be straightforwardly able to answer the following sorts of question?
+- *did a particular oral evidence session produce an unusually large amount of evidence cited in a report?*
+- *do the same contributors often supply accepted written evidence to a large number of committees?*
+
+Information Flow - From Downstream Mentions and Responses (1)
+========================================================
+
+Reports may anticipate mentions in the House or established media:
+- are trackbacks associated with reports that link to instances of where the report is mentioned:
+  - in other areas of Parliamentary business (debates, written questions or answers)?
+  - in publications produced by the libraries, or POST (e.g. research briefings)?
+  - in the established media?
+  - in other committee reports?
+
+Information Flow - From Downstream Mentions and Responses (2)
+========================================================
+
+Recommendations anticipate a Government response:
+- how easy is it to navigate *from* a particular recommendation *to* a Government response addressing that recommendation?
+
+Reproducibility and Automation
+========================================================
+
+1. Data Driven Publishing across committees
+  - e.g. automating the generation of sessional returns, lists of contributors to oral evidence sessions 
+1. Linking between data sources and transclusion of content from other Parliamentary data sources
+  - e.g. quotes from evidence
+1. Support the creation of assets for use within a particular report
+  - e.g. chart or table creation from source dataset
+
+Opportunities for "Reproducible" Methods (1)
+========================================================
+
+- __production__:
+  - multiple output formats (PDF, HTML)
+  - separation of content and style
+  - ability to explore different ways of presenting same data
+  
+- __transparency__:
+  - automated generation of assets (charts, tables) from original data source provides an audit trail ("show your working")
+
+Opportunities for "Reproducible" Methods (2)
+========================================================
+
+- __interim working__:
+  - automation of data objects (charts, tables) at early stage means updates to the data can be monitored over the life of an inquiry without repeated work
+  - regularly previewing of work in progress in a variety of output formats
+
+- __reuse__:
+  - automated work can be used by third parties to confirm or extend analysis, check assumptions, monitor evolution of indicators.
+  - committee can reuse treatments applied to original datasets with future updated datasets.
+
+Archiving
+========================================================
+
+Reproducible methods allow for the automated collection of data from remote sources (publisher APIs and data repositories).
+
+Ideally, copies of retrieved data as well as the reference to the original source should be maintained, e.g. in the case of charts created from data that is later updated (e.g. provisional or incomplete data that is updated).
+
+Human Factors (1)
+========================================================
+
+__Does automation mean changing work practice?__
+
+__Probably__: changes may be required:
+- in software applications used to perform particular tasks;
+- in the overall workflow.
+
+*"It shouldn't be so hard to do X"* <-> *"I wouldn't start from here if I were you"*.
+
+Human Factors (2)
+========================================================
+
+__Does automation mean replacement by robots?__
+
+__No__: whilst *automation* provides an opportunity to replace work that needs to be done repeatedly by work that can be done once, the intention is to *augment* rather than *replace* human endeavour and support clerks rather than replace them.

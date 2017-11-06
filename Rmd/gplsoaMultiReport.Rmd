@@ -35,7 +35,7 @@ library(RSQLite)
 
 # connect to the sqlite file
 con = dbConnect(RSQLite::SQLite(),
-                dbname="/Users/ajh59/Dropbox/onthewight/github-openHealthDataDoodles/notebooks/nhsadmin.sqlite")
+                dbname="/home/rstudio/data/nhsadmin.sqlite")
 
 EPRACCUR='epraccur'
 ccode='10L'

@@ -13,7 +13,7 @@ library(readxl)
 gcode="E06000046"
 la='Isle of Wight'
 
-fp='/Users/ajh59/Downloads/Broadband---Constituency-and-Ward-tables'
+fp='/home/rstudio/data/Broadband---Constituency-and-Ward-tables'
 #Alternatively, we could load it in directly from the CSV URL
 df = read_excel (paste0(fp,'.xlsx'), sheet = 'Ward Data', skip=2)
 df = df<-df[3:(dim(df)[1]-14),] #drop top two rows and last 5
