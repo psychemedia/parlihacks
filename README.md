@@ -9,7 +9,9 @@ Shapefiles available from: [github.com/martinjc/UK-GeoJSON](https://github.com/m
 
 ## Run notebooks etc in BinderHub
 
-[![Binder](http://mybinder.org/badge.svg)](http://beta.mybinder.org/v2/gh/psychemedia/parlikhacks/master)
+*The machine image is ridiculously large, so it may take some time to load... I'll work on a more efficient build when I get a chance!*
+
+[![Binder](http://mybinder.org/badge.svg)](http://beta.mybinder.org/v2/gh/psychemedia/parlihacks/master)
 
 This is a proof-of-concept to deploy a Binder that exposes the RStudio UI as well as a Jupyter Notebook (via [binder-examples/dockerfile-rstudio/](https://github.com/binder-examples/dockerfile-rstudio/)). To start the RStudio session from the Jupyter notebook homepage, click on "new", and select `RStudio Session`. 
 
